@@ -8,18 +8,34 @@
     <title>Document</title>
 </head>
 <body>
-
+<style>
+    li span {
+        color: darkgreen;
+    }
+</style>
 <script>
+
 let url = new URL(location.href);
 let id = url.searchParams.get('id');
-let body = document.querySelector('body');
-let list = document.createElement('ul');
-    let li = document.createElement('li');
-    li.innerText = id;
-    list.appendChild(li);
-body.appendChild(list);
 
+fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
+    .then(value => value.json())
+    .then(value => {
 
+        let userUl  = document.createElement('ul');
+            for (let key in value) {
+                let listItem = document.createElement('li');
+                let keySpan = document.createElement('span');
+                keySpan.textContent = `${key}: `;
+                let valueSpan = document.createElement('span');
+                valueSpan.textContent = value[key];
+                listItem.appendChild(keySpan);
+                listItem.appendChild(valueSpan);
+                userUl.appendChild(listItem);
+            }
+
+        document.body.appendChild(userUl);
+    });
 
 
 
